@@ -1,10 +1,10 @@
 package api.inventory.model;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-@AllArgsConstructor
+@Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
 public class Produto {
@@ -13,5 +13,5 @@ public class Produto {
     private final String nome;
     private String descricao;
     private Double preco;
-    private Double qtdEstoque;
+    private Integer qtdEstoque;
 }

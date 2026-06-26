@@ -29,4 +29,15 @@ public class ProdutoController {
         log.debug("Produtos encontrados: {}", produtoResponseDTOS.size());
         return ResponseEntity.ok().body(produtoResponseDTOS);
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ProdutoResponseDTO> findById(@PathVariable Long id){
+        log.debug("Procurando produto com id: {}", id);
+
+        var produto = service.findById(id);
+        var produtoResponse = mapper.toProdutoResponseDTO(produto);
+
+        log.debug("Produto encontrado: {}", produtoResponse);
+        return ResponseEntity.ok().body(produtoResponse);
+    }
 }

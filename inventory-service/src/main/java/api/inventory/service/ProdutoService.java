@@ -29,7 +29,7 @@ public class ProdutoService {
     }
 
     public List<Produto> listAllName(String nome) {
-        return repository.listAllName(nome);
+        return nome == null ? repository.findAll() : repository.listAllName(nome);
     }
 
     public void save(Produto produto) {

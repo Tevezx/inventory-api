@@ -40,4 +40,15 @@ public class ProdutoController {
         log.debug("Produto encontrado: {}", produtoResponse);
         return ResponseEntity.ok().body(produtoResponse);
     }
+
+    @GetMapping("filterName")
+    public ResponseEntity<List<ProdutoResponseDTO>> listAllName(@RequestParam String nome){
+        log.debug("Procurando produtos com nome: {}", nome);
+
+        var produto = service.listAllName(nome);
+        var produtoResponse = mapper.toProdutoResponseDTOList(produto);
+
+        log.debug("Produtos encontrados: {}", produtoResponse.size());
+        return ResponseEntity.ok().body(produtoResponse);
+    }
 }

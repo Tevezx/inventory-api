@@ -51,4 +51,15 @@ public class ProdutoController {
         log.debug("Produtos encontrados: {}", produtoResponse.size());
         return ResponseEntity.ok().body(produtoResponse);
     }
+
+    @PostMapping()
+    public ResponseEntity<Void> save(@RequestBody ProdutoRequestDTO produtoRequestDTO){
+        log.debug("Salvando produto...");
+
+        var produto = mapper.toProdutoRequestDTO(produtoRequestDTO);
+        service.save(produto);
+
+        log.debug("Produto Salvo!");
+        return ResponseEntity.noContent().build();
+    }
 }

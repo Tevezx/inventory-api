@@ -62,4 +62,13 @@ public class ProdutoController {
         log.debug("Produto Salvo!");
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id){
+        log.debug("Deletando produto id: {}", id);
+        service.deleteById(id);
+
+        log.debug("Produto Deletado!");
+        return ResponseEntity.noContent().build();
+    }
 }

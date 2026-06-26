@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: inventory-service
+  web:
+    error:
+      include-stacktrace: NEVER
+
+  threads:
+    virtual:
+      enabled: true
+
+logging:
+  level:
+    api.inventory: debug

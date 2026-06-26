@@ -1,5 +1,6 @@
 package api.inventory.controller;
 
+import api.inventory.dtos.ProdutoPutRequestDTO;
 import api.inventory.dtos.ProdutoRequestDTO;
 import api.inventory.dtos.ProdutoResponseDTO;
 import api.inventory.mapper.ProdutoMapper;
@@ -31,7 +32,7 @@ public class ProdutoController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ProdutoResponseDTO> findById(@PathVariable Long id){
+    public ResponseEntity<ProdutoResponseDTO> findById(@PathVariable Long id) {
         log.debug("Procurando produto com id: {}", id);
 
         var produto = service.findById(id);
@@ -42,7 +43,7 @@ public class ProdutoController {
     }
 
     @GetMapping("filterName")
-    public ResponseEntity<List<ProdutoResponseDTO>> listAllName(@RequestParam String nome){
+    public ResponseEntity<List<ProdutoResponseDTO>> listAllName(@RequestParam String nome) {
         log.debug("Procurando produtos com nome: {}", nome);
 
         var produto = service.listAllName(nome);
@@ -53,7 +54,7 @@ public class ProdutoController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> save(@RequestBody ProdutoRequestDTO produtoRequestDTO){
+    public ResponseEntity<Void> save(@RequestBody ProdutoRequestDTO produtoRequestDTO) {
         log.debug("Salvando produto...");
 
         var produto = mapper.toProdutoRequestDTO(produtoRequestDTO);
@@ -64,11 +65,22 @@ public class ProdutoController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         log.debug("Deletando produto id: {}", id);
         service.deleteById(id);
 
         log.debug("Produto Deletado!");
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping()
+    public ResponseEntity<Void> update(@RequestBody ProdutoPutRequestDTO produtoPutRequestDTO) {
+        log.debug("Atualizando produto: {}", produtoPutRequestDTO.getNome());
+
+        var produtoRequest = mapper.toProdutoPutRequestDTO(produtoPutRequestDTO);
+        service.update(produtoRequest);
+
+        log.debug("Produto atualizado!");
         return ResponseEntity.noContent().build();
     }
 }

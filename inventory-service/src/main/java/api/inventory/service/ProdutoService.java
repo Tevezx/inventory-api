@@ -42,8 +42,8 @@ public class ProdutoService {
     }
 
     public void update(Produto produto) {
-        Produto produtoUpdated = findById(produto.getId());
-        repository.update(produtoUpdated);
+        findById(produto.getId());
+        repository.update(produto);
     }
 
 }

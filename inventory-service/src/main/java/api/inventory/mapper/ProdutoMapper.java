@@ -1,5 +1,6 @@
 package api.inventory.mapper;
 
+import api.inventory.dtos.ProdutoPutRequestDTO;
 import api.inventory.dtos.ProdutoRequestDTO;
 import api.inventory.dtos.ProdutoResponseDTO;
 import api.inventory.model.Produto;
@@ -14,6 +15,8 @@ public interface ProdutoMapper {
     @Mapping(target = "id", expression = "java(java.util.concurrent.ThreadLocalRandom.current().nextLong(1000L))")
     Produto toProdutoRequestDTO(ProdutoRequestDTO produtoRequestDTO);
     ProdutoResponseDTO toProdutoResponseDTO(Produto produto);
+
+    Produto toProdutoPutRequestDTO(ProdutoPutRequestDTO produtoPutRequestDTO);
 
     List<ProdutoResponseDTO> toProdutoResponseDTOList(List<Produto> produtos);
 }

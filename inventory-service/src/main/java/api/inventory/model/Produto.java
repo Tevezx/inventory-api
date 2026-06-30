@@ -3,10 +3,12 @@ package api.inventory.model;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
+@Setter
 public class Produto {
     @EqualsAndHashCode.Include
     private final Long id;

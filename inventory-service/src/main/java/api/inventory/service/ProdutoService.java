@@ -33,6 +33,14 @@ public class ProdutoService {
     }
 
     public void save(Produto produto) {
+        if (produto.getNome().isEmpty() || produto.getDescricao().isEmpty()) {
+            throw new IllegalArgumentException("O nome e descrição do produto deve ser incluído no cadastro!");
+        }
+
+        if (produto.getPreco() <= 0) {
+            throw new IllegalArgumentException("O preço do produto deve ser maior ou igual a zero!");
+        }
+
         repository.save(produto);
     }
 

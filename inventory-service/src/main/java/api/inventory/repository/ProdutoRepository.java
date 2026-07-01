@@ -31,8 +31,9 @@ public class ProdutoRepository {
                 .toList();
     }
 
-    public void save(Produto produto) {
+    public Produto save(Produto produto) {
         produtoData.getProdutoList().add(produto);
+        return produto;
     }
 
     public void deleteById(Long id) {

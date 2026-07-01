@@ -47,9 +47,9 @@ class ProdutoRepositoryTest {
 
 
     @Test
-    @DisplayName("Retornando todos os produtos")
+    @DisplayName("Retornando todos os produtos cadastrados")
     @Order(1)
-    void findAll_ReturnProduto_WhenProdutoIsFound() {
+    void findAll_ReturnAllProdutos_WhenProdutoIsFound() {
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
 
         var produtos = repository.findAll();

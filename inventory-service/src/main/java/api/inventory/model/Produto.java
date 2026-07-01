@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Produto {
     @EqualsAndHashCode.Include
     private final Long id;
-    private final String nome;
+    private String nome;
     private String descricao;
     private Double preco;
     private Integer qtdEstoque;

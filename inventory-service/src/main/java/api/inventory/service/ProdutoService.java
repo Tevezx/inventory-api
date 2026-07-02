@@ -34,15 +34,14 @@ public class ProdutoService {
 
     public Produto save(Produto produto) {
         if (produto.getNome() == null || produto.getNome().isEmpty() || produto.getDescricao() == null || produto.getDescricao().isEmpty()) {
-            throw new IllegalArgumentException("O nome e descrição do produto deve ser incluído no cadastro!");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "O nome e descrição do produto deve ser incluído no cadastro!");
         }
 
         if (produto.getPreco() == null || produto.getPreco() <= 0) {
-            throw new IllegalArgumentException("O preço do produto deve ser maior ou igual a zero!");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "O preço do produto deve ser maior ou igual a zero!");
         }
 
-        repository.save(produto);
-        return produto;
+        return repository.save(produto);
     }
 
     public void deleteById(Long id) {

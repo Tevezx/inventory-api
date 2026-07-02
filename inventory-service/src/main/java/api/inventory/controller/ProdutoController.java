@@ -7,6 +7,7 @@ import api.inventory.mapper.ProdutoMapper;
 import api.inventory.service.ProdutoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,14 +55,16 @@ public class ProdutoController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> save(@RequestBody ProdutoRequestDTO produtoRequestDTO) {
+    public ResponseEntity<ProdutoResponseDTO> save(@RequestBody ProdutoRequestDTO produtoRequestDTO) {
         log.debug("Salvando produto...");
 
         var produto = mapper.toProdutoRequestDTO(produtoRequestDTO);
-        service.save(produto);
+        var produtoSalvo = service.save(produto);
+
+        var produtoResponse = mapper.toProdutoResponseDTO(produtoSalvo);
 
         log.debug("Produto Salvo!");
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(produtoResponse);
     }
 
     @DeleteMapping("{id}")

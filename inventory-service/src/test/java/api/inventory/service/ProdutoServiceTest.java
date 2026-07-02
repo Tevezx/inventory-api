@@ -133,19 +133,19 @@ class ProdutoServiceTest {
     }
 
     @Test
-    @DisplayName("Salvando um produto com nome e preco nulo e retornando throw IlegalArgumentException")
+    @DisplayName("Salvando um produto com nome e descrição nulo e retornando throw ResponseStatusException")
     @Order(8)
     void save_ThrowIlegalArgumentException_WhenNameIsNull() {
         var produto = Produto
                 .builder()
                 .id(3L)
                 .nome(null)
-                .descricao("Fone logitech gamer")
-                .preco(null)
+                .descricao(null)
+                .preco(250.0)
                 .qtdEstoque(4)
                 .build();
 
-        Assertions.assertThatThrownBy(() -> service.save(produto)).isInstanceOf(IllegalArgumentException.class);
+        Assertions.assertThatThrownBy(() -> service.save(produto)).isInstanceOf(ResponseStatusException.class);
     }
 
     @Test

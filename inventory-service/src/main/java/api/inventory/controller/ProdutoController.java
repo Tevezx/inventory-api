@@ -5,6 +5,7 @@ import api.inventory.dtos.ProdutoRequestDTO;
 import api.inventory.dtos.ProdutoResponseDTO;
 import api.inventory.mapper.ProdutoMapper;
 import api.inventory.service.ProdutoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -55,7 +56,7 @@ public class ProdutoController {
     }
 
     @PostMapping()
-    public ResponseEntity<ProdutoResponseDTO> save(@RequestBody ProdutoRequestDTO produtoRequestDTO) {
+    public ResponseEntity<ProdutoResponseDTO> save(@RequestBody @Valid ProdutoRequestDTO produtoRequestDTO) {
         log.debug("Salvando produto...");
 
         var produto = mapper.toProdutoRequestDTO(produtoRequestDTO);
@@ -77,7 +78,7 @@ public class ProdutoController {
     }
 
     @PutMapping()
-    public ResponseEntity<Void> update(@RequestBody ProdutoPutRequestDTO produtoPutRequestDTO) {
+    public ResponseEntity<Void> update(@RequestBody @Valid ProdutoPutRequestDTO produtoPutRequestDTO) {
         log.debug("Atualizando produto: {}", produtoPutRequestDTO.getNome());
 
         var produtoRequest = mapper.toProdutoPutRequestDTO(produtoPutRequestDTO);

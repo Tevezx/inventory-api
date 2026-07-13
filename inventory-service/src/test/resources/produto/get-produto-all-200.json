@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "nome": "Mouse Logitech",
+    "descricao": "Mouse logitech de precisão",
+    "preco": 200.0,
+    "qtdEstoque": 2
+  },
+
+  {
+    "id": 2,
+    "nome": "Teclado Logitech",
+    "descricao": "Teclado logitech Gamer",
+    "preco": 400.0,
+    "qtdEstoque": 7
+  }
+]

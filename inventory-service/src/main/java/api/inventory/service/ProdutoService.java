@@ -1,11 +1,11 @@
 package api.inventory.service;
 
+import api.inventory.exception.InternalErrorException;
+import api.inventory.exception.NotFoundException;
 import api.inventory.model.Produto;
 import api.inventory.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class ProdutoService {
     public Produto findById(Long id) {
         return repository
                 .findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+                .orElseThrow(() -> new NotFoundException("Produto não encontrado"));
     }
 
     public List<Produto> listAllName(String nome) {
@@ -34,11 +34,11 @@ public class ProdutoService {
 
     public Produto save(Produto produto) {
         if (produto.getNome() == null || produto.getNome().isEmpty() || produto.getDescricao() == null || produto.getDescricao().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "O nome e descrição do produto deve ser incluído no cadastro!");
+            throw new InternalErrorException("O nome e descrição do produto deve ser incluído no cadastro!");
         }
 
         if (produto.getPreco() == null || produto.getPreco() <= 0) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "O preço do produto deve ser maior ou igual a zero!");
+            throw new InternalErrorException("O preço do produto deve ser maior ou igual a zero!");
         }
 
         return repository.save(produto);

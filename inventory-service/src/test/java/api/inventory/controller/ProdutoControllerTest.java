@@ -67,6 +67,7 @@ class ProdutoControllerTest {
     @Order(1)
     void findAll_ReturnsAllProdutos_WhenSucessFull() throws Exception {
         var response = readResourceFile("produto/get-produto-all-200.json");
+
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/produtos"))
@@ -80,8 +81,10 @@ class ProdutoControllerTest {
     @Order(2)
     void findById_ReturnsProduto_WhenProdutoIdIsFound() throws Exception {
         var response = readResourceFile("produto/get-produto-find-by-id-1-200.json");
+
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
         var id = 1L;
+
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/produtos/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -92,12 +95,15 @@ class ProdutoControllerTest {
     @DisplayName("GET v1/produtos/90 - Retornando o throw ResponseStatusException, caso o id não seja encontrado")
     @Order(3)
     void findById_ReturnsThrowResponseStatusException_WhenProdutoIdIsNotFound() throws Exception {
+        var response = readResourceFile("produto/get-produto-find-by-id-404.json");
+
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
         var id = 90L;
+
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/produtos/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.status().reason("Produto não encontrado"));
+                .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
     @Test
@@ -105,9 +111,10 @@ class ProdutoControllerTest {
     @Order(4)
     void listAllName_ReturnsProdutos_WhenNameIsFound() throws Exception {
         var response = readResourceFile("produto/get-produto-filter-name-Mouse-Logitech-200.json");
-        BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
 
+        BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
         var nome = "Mouse Logitech";
+
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/produtos/filterName").param("nome", nome))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -176,7 +183,8 @@ class ProdutoControllerTest {
     @DisplayName("POST v1/produtos - Salvando um produto com nome e preco nulo e retornando throw IlegalArgumentException")
     @Order(8)
     void save_ThrowIlegalArgumentException_WhenNameIsNull() throws Exception {
-        var request = readResourceFile("produto/post-produto-request-name-preco-null-500.json");
+        var request = readResourceFile("produto/post-produto-request-name-descricao-null-500.json");
+        var response = readResourceFile("produto/post-produto-response-name-descricao-null-500.json");
 
         var produto = Produto
                 .builder()
@@ -195,7 +203,7 @@ class ProdutoControllerTest {
                 )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isInternalServerError())
-                .andExpect(MockMvcResultMatchers.status().reason("O nome e descrição do produto deve ser incluído no cadastro!"));
+                .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
     @Test
@@ -214,13 +222,15 @@ class ProdutoControllerTest {
     @DisplayName("DELETE v1/produtos/90 - Deletando um produto com id inexistente e lançando throw ResponseStatusException")
     @Order(10)
     void deleteById_ThrowResponseStatusException_WhenIdIsNotFound() throws Exception {
-        var id = 90L;
+        var response = readResourceFile("produto/delete-produto-response-404.json");
+
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
+        var id = 90L;
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/v1/produtos/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.status().reason("Produto não encontrado"));
+                .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
     @Test
@@ -228,6 +238,7 @@ class ProdutoControllerTest {
     @Order(11)
     void update_UpdateProduto_WhenSucessFull() throws Exception {
         var request = readResourceFile("produto/put-produto-request-204.json");
+
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -244,6 +255,8 @@ class ProdutoControllerTest {
     @Order(12)
     void update_UpdateProduto_WhenIdIsNotFound() throws Exception {
         var request = readResourceFile("produto/put-produto-request-404.json");
+        var response = readResourceFile("produto/put-produto-response-404.json");
+
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -253,7 +266,7 @@ class ProdutoControllerTest {
                 )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.status().reason("Produto não encontrado"));
+                .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
     private String readResourceFile(String fileName) throws IOException {

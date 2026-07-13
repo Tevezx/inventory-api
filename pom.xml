@@ -16,5 +16,6 @@
 
 	<modules>
 		<module>inventory-service</module>
-	</modules>
+        <module>commons-core</module>
+    </modules>
 </project>

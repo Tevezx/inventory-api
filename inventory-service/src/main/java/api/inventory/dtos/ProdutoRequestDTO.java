@@ -1,6 +1,6 @@
 package api.inventory.dtos;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,8 +11,10 @@ public class ProdutoRequestDTO {
     private String nome;
     @NotBlank(message = "Descrição obrigatória")
     private String descricao;
-    @NotBlank(message = "Preço obrigatório")
+    @NotNull(message = "Preço obrigatório")
+    @Positive(message = "Preço deve ser positivo")
     private Double preco;
-    @NotBlank(message = "Quantidade em estoque obrigatório")
+    @NotNull(message = "Quantidade em estoque obrigatório")
+    @PositiveOrZero(message = "Quantidade em estoque deve ser maior ou igual a zero")
     private Integer qtdEstoque;
 }

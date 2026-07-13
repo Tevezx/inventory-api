@@ -1,5 +1,6 @@
 package api.inventory.service;
 
+import api.inventory.commons.ProdutoUtils;
 import api.inventory.model.Produto;
 import api.inventory.repository.ProdutoRepository;
 import org.assertj.core.api.Assertions;
@@ -25,29 +26,13 @@ class ProdutoServiceTest {
 
     @Mock
     private ProdutoRepository repository;
-    private final List<Produto> produtoList = new ArrayList<>();
+    @InjectMocks
+    private ProdutoUtils produtoUtils;
+    private List<Produto> produtoList = new ArrayList<>();
 
     @BeforeEach
     void init() {
-        var mouse = Produto
-                .builder()
-                .id(1L)
-                .nome("Mouse Logitech")
-                .descricao("Mouse logitech de precisão")
-                .preco(200.0)
-                .qtdEstoque(2)
-                .build();
-
-        var teclado = Produto
-                .builder()
-                .id(2L)
-                .nome("Teclado Logitech")
-                .descricao("Teclado logitech Gamer")
-                .preco(400.0)
-                .qtdEstoque(7)
-                .build();
-
-        produtoList.addAll(List.of(mouse, teclado));
+        produtoList = produtoUtils.newProdutoList();
     }
 
     @Test

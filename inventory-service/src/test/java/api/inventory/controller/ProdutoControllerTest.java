@@ -32,6 +32,7 @@ import java.util.stream.Stream;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ComponentScan(basePackages = "api.inventory")
 class ProdutoControllerTest {
+    private final static String URL = "/v1/produtos";
     @Autowired
     private MockMvc mockMvc;
     @MockitoBean
@@ -58,7 +59,7 @@ class ProdutoControllerTest {
 
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/produtos"))
+        mockMvc.perform(MockMvcRequestBuilders.get(URL))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
@@ -73,7 +74,7 @@ class ProdutoControllerTest {
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
         var id = 1L;
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/produtos/{id}", id))
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
@@ -88,7 +89,7 @@ class ProdutoControllerTest {
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
         var id = 90L;
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/produtos/{id}", id))
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().json(response));
@@ -103,7 +104,7 @@ class ProdutoControllerTest {
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
         var nome = "Mouse Logitech";
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/produtos/filterName").param("nome", nome))
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/filterName").param("nome", nome))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
@@ -117,7 +118,7 @@ class ProdutoControllerTest {
 
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/produtos/filterName").param("nome"))
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/filterName").param("nome"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
@@ -132,7 +133,7 @@ class ProdutoControllerTest {
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(Collections.emptyList());
         var nome = " ";
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/produtos/filterName").param("nome", nome))
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/filterName").param("nome", nome))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
@@ -174,7 +175,7 @@ class ProdutoControllerTest {
         var id = 1L;
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/v1/produtos/{id}", id))
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -188,7 +189,7 @@ class ProdutoControllerTest {
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
         var id = 90L;
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/v1/produtos/{id}", id))
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().json(response));

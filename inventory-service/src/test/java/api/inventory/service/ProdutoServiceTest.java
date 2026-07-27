@@ -2,7 +2,6 @@ package api.inventory.service;
 
 import api.inventory.commons.ProdutoUtils;
 import api.inventory.model.Produto;
-import api.inventory.repository.ProdutoRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -29,7 +29,7 @@ public class ProdutoService {
     }
 
     public List<Produto> listAllName(String nome) {
-        return nome == null || nome.isEmpty() ? repository.findAll() : repository.listAllName(nome);
+        return nome == null || nome.isEmpty() ? repository.findAll() : repository.findByName(nome);
     }
 
     public Produto save(Produto produto) {
@@ -51,7 +51,7 @@ public class ProdutoService {
 
     public void update(Produto produto) {
         findById(produto.getId());
-        repository.update(produto);
+        repository.save(produto);
     }
 
 }

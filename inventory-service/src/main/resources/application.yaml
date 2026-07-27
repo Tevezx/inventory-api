@@ -1,14 +1,21 @@
 spring:
+  config:
+    import: optional:classpath:.env[.properties]
   application:
     name: inventory-service
   web:
     error:
       include-stacktrace: NEVER
-
+  datasource:
+    url: jdbc:mysql://localhost:3306/inventory_api?useTimezone=True&serverTimezone=UTC&createDatabaseIfNotExists=true
+    username: ${ENV_ROOT_USER}
+    password: ${ENV_ROOT_PASSWORD}
   threads:
     virtual:
       enabled: true
-
+  jpa:
+    hibernate:
+      ddl-auto: update
 logging:
   level:
     api.inventory: debug

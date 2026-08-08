@@ -59,7 +59,7 @@ class ProdutoRepositoryTest {
     void listAllName_ReturnsEmpty_WhenNameIsNull() {
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
 
-        var produto = repository.listAllName(null);
+        var produto = repository.findByName(null);
         Assertions.assertThat(produto).isNotNull().isEmpty();
     }
 
@@ -70,7 +70,7 @@ class ProdutoRepositoryTest {
         BDDMockito.when(produtoData.getProdutoList()).thenReturn(produtoList);
 
         var produtoExpected = produtoList.getFirst();
-        var produto = repository.listAllName(produtoExpected.getNome());
+        var produto = repository.findByName(produtoExpected.getNome());
         Assertions.assertThat(produto).isNotNull().contains(produtoExpected);
     }
 
@@ -117,7 +117,7 @@ class ProdutoRepositoryTest {
         var produto = produtoList.getFirst();
         produto.setDescricao("Mouse Razer");
 
-        repository.update(produto);
+        repository.save(produto);
 
         Assertions.assertThat(produtos).contains(produto);
         Assertions.assertThat(produto).hasNoNullFieldsOrProperties();

@@ -4,6 +4,7 @@ import api.inventory.commons.FileUtils;
 import api.inventory.commons.ProdutoUtils;
 import api.inventory.model.Produto;
 import api.inventory.model.ProdutoData;
+import api.inventory.repository.ProdutoRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;

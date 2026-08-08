@@ -2,6 +2,7 @@ package api.inventory.service;
 
 import api.inventory.commons.ProdutoUtils;
 import api.inventory.model.Produto;
+import api.inventory.repository.ProdutoRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +23,6 @@ import java.util.Optional;
 class ProdutoServiceTest {
     @InjectMocks
     private ProdutoService service;
-
     @Mock
     private ProdutoRepository repository;
     @InjectMocks
@@ -39,8 +39,8 @@ class ProdutoServiceTest {
     @Order(1)
     void findAll_ReturnsAllProdutos_WhenSucessFull() {
         BDDMockito.when(repository.findAll()).thenReturn(produtoList);
-
         var produtos = service.findAll();
+
         Assertions.assertThat(produtos).isNotNull().hasSameElementsAs(produtoList);
     }
 
@@ -70,7 +70,7 @@ class ProdutoServiceTest {
     void listAllName_ReturnsProdutos_WhenNameIsFound() {
         var produto = produtoList.getFirst();
         var produtoExpected = produtoList.stream().filter(produtos -> produtos.getNome().equalsIgnoreCase(produto.getNome())).toList();
-        BDDMockito.when(repository.listAllName(produto.getNome())).thenReturn(produtoExpected);
+        BDDMockito.when(repository.findByName(produto.getNome())).thenReturn(produtoExpected);
 
         var produtoResponse = service.listAllName(produto.getNome());
         Assertions.assertThat(produtoExpected).hasSameElementsAs(produtoResponse).isNotNull();
@@ -91,7 +91,7 @@ class ProdutoServiceTest {
     @Order(6)
     void listAllName_ReturnsProdutos_WhenNameIsBlank() {
         var produto = produtoList.getFirst();
-        BDDMockito.when(repository.listAllName(produto.getNome())).thenReturn(Collections.emptyList());
+        BDDMockito.when(repository.findByName(produto.getNome())).thenReturn(Collections.emptyList());
 
         var produtoResponse = service.listAllName(produto.getNome());
         Assertions.assertThat(produtoResponse).isEmpty();

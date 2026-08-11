@@ -1,0 +1,4 @@
+{
+  "status": 500,
+  "message": "The product name and description must be included in the registration!"
+}

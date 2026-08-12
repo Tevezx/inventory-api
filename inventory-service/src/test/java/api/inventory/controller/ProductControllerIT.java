@@ -66,4 +66,22 @@ public class ProductControllerIT {
                 .body(Matchers.equalTo(response))
                 .log().all();
     }
+
+    @Test
+    @DisplayName("GET v1/products/90 - Returning throw NotFoundException, case id not found")
+    @Order(3)
+    void findById_ReturnsThrowNotFoundException_WhenProductIdIsNotFound() throws Exception {
+        var response = fileUtils.readResourceFile("product/get-product-find-by-id-404.json");
+        var id = 90L;
+
+        RestAssured.given()
+                .contentType(ContentType.JSON).accept(ContentType.JSON)
+                .when()
+                .pathParam("id", id)
+                .get(URL + "/{id}")
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .body(Matchers.equalTo(response))
+                .log().all();
+    }
 }

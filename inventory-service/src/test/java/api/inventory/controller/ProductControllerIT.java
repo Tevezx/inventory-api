@@ -6,11 +6,15 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -84,4 +88,44 @@ public class ProductControllerIT {
                 .body(Matchers.equalTo(response))
                 .log().all();
     }
+
+    @Test
+    @DisplayName("GET v1/products/filterName?name=Mouse Logitech - Returning every products where name equals parameter")
+    @Order(4)
+    @Sql(value = "/sql/product/init_one_product.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "/sql/product/clean_products.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    void listAllName_ReturnsProducts_WhenNameIsFound() throws Exception {
+        var response = fileUtils.readResourceFile("product/get-product-filter-name-Mouse-Logitech-200.json");
+
+        RestAssured.given()
+                .contentType(ContentType.JSON).accept(ContentType.JSON)
+                .when()
+                .queryParam("filterName", "Mouse Logitech")
+                .get(URL)
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body(Matchers.equalTo(response))
+                .log().all();
+    }
+
+    @Test
+    @DisplayName("GET v1/products/filterName?name= - Returning every products, case parameter null")
+    @Sql(value = "/sql/product/init_two_products.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "/sql/product/clean_products.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Order(5)
+    void listAllName_ReturnsProducts_WhenNameIsNull() throws Exception {
+        var response = fileUtils.readResourceFile("product/get-product-all-200.json");
+
+        RestAssured.given()
+                .contentType(ContentType.JSON).accept(ContentType.JSON)
+                .when()
+                .queryParam("filterName", "Teclado")
+                .get(URL)
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body(Matchers.equalTo(response))
+                .log().all();
+    }
+
+
 }

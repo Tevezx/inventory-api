@@ -1,17 +1,1 @@
-[
-  {
-    "id": 1,
-    "name": "Mouse Logitech",
-    "description": "Mouse logitech de precisão",
-    "price": 200.0,
-    "qtdStock": 2
-  },
-
-  {
-    "id": 2,
-    "name": "Teclado Logitech",
-    "description": "Teclado logitech Gamer",
-    "price": 400.0,
-    "qtdStock": 7
-  }
-]
+[{"id":1,"name":"Mouse Logitech","description":"Mouse logitech de precisão","price":200.0,"qtdStock":2},{"id":2,"name":"Teclado Logitech","description":"Teclado logitech Gamer","price":400.0,"qtdStock":7}]

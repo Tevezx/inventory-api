@@ -268,10 +268,41 @@ public class ProductControllerIT {
                 .isEqualTo(expectedResponse);
     }
 
+    @ParameterizedTest
+    @MethodSource("putBadRequestSource")
+    @DisplayName("PUT v1/produtos - Atualizando produto com id nulo e preços inválidos")
+    @Order(13)
+    void update_UpdateProduto_WhenIdIsNullAndEmptyFields(String requestFile, String responseFile) throws Exception {
+        var request = fileUtils.readResourceFile("product/%s".formatted(requestFile));
+        var expectedResponse = fileUtils.readResourceFile("product/%s".formatted(responseFile));
+
+        var response = RestAssured.given()
+                .contentType(ContentType.JSON).accept(ContentType.JSON)
+                .body(request)
+                .when()
+                .put(URL)
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .log().all()
+                .extract().response().body().asString();
+
+        JsonAssertions.assertThatJson(response)
+                .whenIgnoringPaths("timestamp")
+                .isEqualTo(expectedResponse);
+    }
+
     private static Stream<Arguments> postBadRequestSource() {
         return Stream.of(
                 Arguments.of("post-product-request-user-blank-fields-400.json", "post-request-blank-fields-404.json"),
                 Arguments.of("post-product-request-user-negative-fields-400.json", "post-request-price-stock-negative-404.json")
+        );
+    }
+
+    private static Stream<Arguments> putBadRequestSource() {
+        return Stream.of(
+                Arguments.of("put-request-user-blank-fields-400.json", "put-request-blank-fields-404.json"),
+                Arguments.of("put-request-user-null-id-400.json", "put-request-id-null-404.json"),
+                Arguments.of("put-request-user-price-stock-negative-400.json", "put-request-price-stock-negative-404.json")
         );
     }
 }

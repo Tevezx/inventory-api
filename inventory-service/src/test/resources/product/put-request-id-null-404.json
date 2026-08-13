@@ -1,0 +1,7 @@
+{
+  "error": "Bad Request",
+  "message": "Id required",
+  "path": "/v1/products",
+  "status": 400,
+  "timestamp": "2026-08-13T12:28:53.5533242-03:00"
+}

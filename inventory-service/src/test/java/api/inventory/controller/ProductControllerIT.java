@@ -7,11 +7,16 @@ import io.restassured.http.ContentType;
 import net.javacrumbs.jsonunit.assertj.JsonAssertions;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
+
+import java.util.stream.Stream;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -206,5 +211,67 @@ public class ProductControllerIT {
                 .log().all();
     }
 
+    @Test
+    @DisplayName("PUT v1/products - Updating product")
+    @Order(10)
+    void update_UpdateProduct_WhenSuccessFull() throws Exception {
+        var request = fileUtils.readResourceFile("product/put-product-request-204.json");
 
+        RestAssured.given()
+                .contentType(ContentType.JSON).accept(ContentType.JSON)
+                .body(request)
+                .when()
+                .put(URL)
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .log().all();
+    }
+
+    @Test
+    @DisplayName("PUT v1/products - Updating product by id not exists and throw NotFoundException")
+    @Order(11)
+    void update_UpdateProduct_WhenIdIsNotFound() throws Exception {
+        var request = fileUtils.readResourceFile("product/put-product-request-404.json");
+        var response = fileUtils.readResourceFile("product/put-product-response-404.json");
+
+        RestAssured.given()
+                .contentType(ContentType.JSON).accept(ContentType.JSON)
+                .body(request)
+                .when()
+                .put(URL)
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .body(Matchers.equalTo(response))
+                .log().all();
+    }
+
+    @ParameterizedTest
+    @MethodSource("postBadRequestSource")
+    @DisplayName("POST v1/products - Saving one product where data is blank")
+    @Order(12)
+    void save_SavesProduct_WhenEmptyFields(String requestFile, String responseFile) throws Exception {
+        var request = fileUtils.readResourceFile("product/%s".formatted(requestFile));
+        var expectedResponse = fileUtils.readResourceFile("product/%s".formatted(responseFile));
+
+        var response = RestAssured.given()
+                .contentType(ContentType.JSON).accept(ContentType.JSON)
+                .body(request)
+                .when()
+                .post(URL)
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .log().all()
+                .extract().response().body().asString();
+
+        JsonAssertions.assertThatJson(response)
+                .whenIgnoringPaths("timestamp")
+                .isEqualTo(expectedResponse);
+    }
+
+    private static Stream<Arguments> postBadRequestSource() {
+        return Stream.of(
+                Arguments.of("post-product-request-user-blank-fields-400.json", "post-request-blank-fields-404.json"),
+                Arguments.of("post-product-request-user-negative-fields-400.json", "post-request-price-stock-negative-404.json")
+        );
+    }
 }

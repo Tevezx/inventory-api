@@ -1,0 +1,1 @@
+{"error":"Bad Request","message":"Description required, Name required, Price required, Quantity in stock required","path":"/v1/products","status":400,"timestamp":"2026-08-13T12:19:43.2716499-03:00"}

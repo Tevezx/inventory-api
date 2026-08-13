@@ -145,7 +145,7 @@ class ProductControllerTest {
 
         var product = Product
                 .builder()
-                .id(3L)
+                .id(1L)
                 .name("HeadSet Logitech")
                 .description("HeadSet logitech gamer")
                 .price(250.0)

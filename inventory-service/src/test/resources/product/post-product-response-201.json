@@ -1,7 +1,1 @@
-{
-  "id": 3,
-  "name": "HeadSet Logitech",
-  "description": "HeadSet logitech gamer",
-  "price": 250.0,
-  "qtdStock": 3
-}
+{"id":1,"name":"HeadSet Logitech","description":"HeadSet logitech gamer","price":250.0,"qtdStock":3}

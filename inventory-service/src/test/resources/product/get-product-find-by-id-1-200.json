@@ -1,7 +1,1 @@
-{
-  "id": 1,
-  "name": "Mouse Logitech",
-  "description": "Mouse logitech de precisão",
-  "price": 200.0,
-  "qtdStock": 2
-}
+{"id":1,"name":"Mouse Logitech","description":"Mouse logitech de precisão","price":200.0,"qtdStock":2}

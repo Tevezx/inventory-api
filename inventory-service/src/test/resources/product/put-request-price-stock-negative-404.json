@@ -1,0 +1,7 @@
+{
+  "error": "Bad Request",
+  "message": "Quantity in stock must be greater than or equal to zero, The price should be positive",
+  "path": "/v1/products",
+  "status": 400,
+  "timestamp": "2026-08-13T12:29:30.4197645-03:00"
+}
